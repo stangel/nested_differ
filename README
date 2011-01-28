@@ -1,0 +1,28 @@
+= NestedHTML
+
+This simple Ruby class is a formatter extension for pvande's excellent "differ" gem.  The built-in HTML formatter is great for line-by-line diffs or word-by-word diffs but cannot generate output that shows both line changes and, within a line change, highlights word changes (as seen on Trac and github, for example).  This formatter will generate the HTML tags necessary to produce such output.
+
+== Usage
+
+The author(s) of the differ gem had the foresight to allow classes to be passed to the "format_as" method.  Simply copy nested_html.rb to a suitable directory in your project, require it as needed and then pass the class to format_as:
+
+    Differ.diff( @current, @original ).format_as( Differ::Format::NestedHTML )
+
+The resulting output will look something like this:
+
+    Now is the time
+    <del class="differ">for all good <del class="differ_inner">men</del></del>
+    <ins class="differ">for all good <ins class="differ_inner">people</ins></ins>
+    to come to the aid of their countries.
+
+Use your own stylesheets to apply whatever formatting you like.  I use something like this:
+
+    .revision_diff del.differ           {display:block;text-decoration:none;background-color:#dfd;color:#333;margin:3px -5px;padding:3px 5px}
+    .revision_diff ins.differ           {display:block;text-decoration:none;background-color:#fdd;color:#333;margin:3px -5px;padding:3px 5px}
+    .revision_diff del.differ_inner     {display:inline;text-decoration:none;background-color:#9e9;color:#333;margin:1px;}
+    .revision_diff ins.differ_inner     {display:inline;text-decoration:none;background-color:#e99;color:#333;margin:1px;}
+
+== License
+
+Distributed under the University of Illinois/NCSA Open Source License - see License.txt for details.
+
